@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.zhou.map.ScMapper">
+    <!--定义 实体类和数据库映射字段部分-->
+    <resultMap id="ResultMapSc" type="com.zhou.pojo.Sc">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="itemId" column="item_id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+
+
+
+
+    </resultMap>
+
+    <resultMap id="ResultMapScDto" type="com.zhou.pojo.Sc">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="itemId" column="item_id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+
+        <association property="item" column="item_id" select="com.zhou.map.ItemMapper.load"/>
+    </resultMap>
+    <!--声明数据库字段-->
+    <sql id="Sc_field">
+        id
+        ,item_id,user_id
+    </sql>
+    <!--实体类属性-->
+    <sql id="Sc_insert">
+        #{id}
+        ,
+        #{itemId},
+        #{userId}
+
+    </sql>
+
+    <!--更新的语句-->
+    <sql id="Sc_update">
+        <if test="itemId != null">
+            item_id=#{itemId},
+        </if>
+        <if test="orderId != null">
+            user_id=#{userId},
+        </if>
+
+    </sql>
+
+
+    <!--查询时条件-->
+    <sql id="Sc_where">
+        <if test="id != null">
+            and id=#{id}
+        </if>
+        <if test="itemId != null">
+            and item_id=#{itemId}
+        </if>
+        <if test="userId != null">
+            and user_id=#{userId}
+        </if>
+
+
+    </sql>
+
+
+    <!-- 新增 -->
+    <!--  参数：实体类
+          返回：主键-->
+    <insert id="insert" parameterType="com.zhou.pojo.Sc" useGeneratedKeys="true" keyProperty="id">
+        insert into sc (
+        <include refid="Sc_field"/>
+        ) values (
+        <include refid="Sc_insert"/>
+        )
+    </insert>
+
+    <!-- 通过实体主键进行删除-->
+    <!--参数：id-->
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        delete
+        from sc
+        where id = #{id}
+    </delete>
+
+    <!--通过实体删除-->
+    <delete id="deleteByEntity" parameterType="com.zhou.pojo.Sc">
+        delete from sc where 1=1
+        <include refid="Sc_where"/>
+    </delete>
+
+    <!--通过Map 删除-->
+    <delete id="deleteByMap" parameterType="java.util.Map">
+        delete from sc where 1=1
+        <include refid="Sc_where"/>
+    </delete>
+
+    <!--更新一个实体-->
+    <update id="update" parameterType="com.zhou.pojo.Sc">
+        update sc
+        <set>
+            <include refid="Sc_update"/>
+        </set>
+        <where>
+            <include refid="Sc_where"/>
+        </where>
+    </update>
+
+    <!--通过 id进行修改-->
+    <update id="updateById" parameterType="com.zhou.pojo.Sc">
+        update sc
+        <set>
+            <include refid="Sc_update"/>
+        </set>
+        where id=#{id}
+    </update>
+
+    <!--根据 参数 查询-->
+    <select id="listByMap" resultMap="ResultMapSc" parameterType="map">
+        select
+        <include refid="Sc_field"/>
+        from sc where 1=1
+        <include refid="Sc_where"/>
+    </select>
+
+    <!--查询所有实体-->
+    <select id="listAll" resultMap="ResultMapSc">
+        select
+        <include refid="Sc_field"/>
+        from sc
+    </select>
+
+    <!--查询所有实体,根据实体属性值为判断条件查询所有实体-->
+    <select id="listAllByEntity" resultMap="ResultMapSc">
+        select
+        <include refid="Sc_field"/>
+        from sc
+        where 1=1
+        <include refid="Sc_where"/>
+    </select>
+
+    <!--根据主键 获取一个实体-->
+    <select id="getById" resultMap="ResultMapSc" parameterType="java.lang.Integer">
+        select
+        <include refid="Sc_field"/>
+        from sc
+        where id = #{id}
+    </select>
+
+    <!--通过map查询-->
+    <select id="getByMap" resultMap="ResultMapSc" parameterType="java.util.Map">
+        select
+        <include refid="Sc_field"/>
+        from sc
+        where 1=1
+        <include refid="Sc_where"/>
+    </select>
+    <!--根据主键获取一个实体-->
+    <select id="load" resultMap="ResultMapSc" parameterType="java.lang.Integer">
+        select
+        <include refid="Sc_field"></include>
+        from sc where 1=1
+        <include refid="Sc_where"></include>
+    </select>
+    <!--通过实体查询-->
+    <select id="getByEntity" resultMap="ResultMapSc" parameterType="com.zhou.pojo.Sc">
+        select
+        <include refid="Sc_field"/>
+        from sc
+        where 1=1
+        <include refid="Sc_where"/>
+    </select>
+    <!--批量新增-->
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into sc(
+        <include refid="Sc_field"/>
+        )values
+        <foreach collection="list" item="item" index="index" separator=",">
+            ( #{item.item_id},
+            #{item.user_id}
+
+            )
+        </foreach>
+    </insert>
+
+    <!--批量修改-->
+    <update id="updateBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" separator=";">
+            update sc
+            <set>
+
+                <if test="item.itemId != null">
+                    item_id=#{item.itemId},
+                </if>
+                <if test="item.userId != null">
+                    user_id=#{item.userId},
+                </if>
+
+
+
+            </set>
+            were 1=1
+            <if test="item.id !=null">
+                and id= #{item.id}
+            </if>
+        </foreach>
+    </update>
+
+    <!--封装存sql语句-->
+    <!--查询一个对象返回实体类-->
+    <!--    <select id="getBySqlReturnMap" resultMap="map">-->
+    <!--        ${sql}-->
+    <!--    </select>-->
+
+    <!--    &lt;!&ndash;查询一个对象返回map&ndash;&gt;-->
+    <!--&lt;!&ndash;    <select id="getBySqlReturnEntity" resultMap="java.util.Map">&ndash;&gt;-->
+    <!--&lt;!&ndash;        ${sql}&ndash;&gt;-->
+    <!--&lt;!&ndash;    </select>&ndash;&gt;-->
+
+    <!--    &lt;!&ndash;查询列表返回一个实体&ndash;&gt;-->
+    <select id="listBySqlReturnEntity" resultMap="ResultMapScDto">
+        ${sql}
+    </select>
+
+    <!--    &lt;!&ndash;查询列表返回map&ndash;&gt;-->
+    <!--    <select id="listBySqlReturnMap" resultMap="java.util.Map">-->
+    <!--        ${sql}-->
+    <!--    </select>-->
+
+    <!--    &lt;!&ndash;查询分页&ndash;&gt;-->
+    <select id="findBySqlRerturnEntity" resultMap="ResultMapScDto">
+        ${sql}
+    </select>
+
+    <!--    &lt;!&ndash;通过sql修改&ndash;&gt;-->
+    <select id="updateBysql">
+        ${sql}
+    </select>
+
+    <!--    &lt;!&ndash;通过sql删除&ndash;&gt;-->
+    <!--    <select id="deleteBySql" resultMap="java.util.Map">-->
+    <!--        ${sql}-->
+    <!--    </select>-->
+    <!--    <select id="findBySqlRerturnEntity"  >-->
+    <!--        ${sql}-->
+    <!--    </select>-->
+</mapper>

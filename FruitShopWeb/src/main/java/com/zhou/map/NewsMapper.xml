@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.zhou.map.NewsMapper">
+    <!--定义 实体类和数据库映射字段部分-->
+    <resultMap id="ResultMapNews" type="com.zhou.pojo.News">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="content" column="content" jdbcType="VARCHAR"/>
+        <result property="addTime" column="addTime" jdbcType="TIMESTAMP"/>
+
+    </resultMap>
+    <!--声明数据库字段-->
+    <sql id="News_field">
+        id
+        ,name,content,addTime
+    </sql>
+    <!--实体类属性-->
+    <sql id="News_insert">
+        #{id}
+        ,
+        #{name},
+        #{content},
+        #{addTime}
+
+    </sql>
+    <!--更新的语句-->
+    <sql id="News_update">
+        <if test="name != null">
+            name=#{name},
+        </if>
+        <if test="content != null">
+            content=#{content},
+        </if>
+        <if test="addTime != null">
+            addTime=#{addTime},
+        </if>
+
+
+    </sql>
+
+    <!--查询时条件-->
+    <sql id="News_where">
+        <if test="name != null">
+            and name=#{name}
+        </if>
+        <if test="content != null">
+            and content=#{content}
+        </if>
+        <if test="addTime != null">
+            and addTime=#{addTime}
+        </if>
+
+    </sql>
+
+
+    <!-- 新增 -->
+    <!--  参数：实体类
+          返回：主键-->
+    <insert id="insert" parameterType="com.zhou.pojo.News" useGeneratedKeys="true" keyProperty="id">
+        insert into news (
+        <include refid="News_field"/>
+        ) values (
+        <include refid="News_insert"/>
+        )
+    </insert>
+
+    <!-- 通过实体主键进行删除-->
+    <!--参数：id-->
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        delete
+        from news
+        where id = #{id}
+    </delete>
+
+    <!--通过实体删除-->
+    <delete id="deleteByEntity" parameterType="com.zhou.pojo.News">
+        delete from news where 1=1
+        <include refid="News_where"/>
+    </delete>
+
+    <!--通过Map 删除-->
+    <delete id="deleteByMap" parameterType="java.util.Map">
+        delete from news where 1=1
+        <include refid="News_where"/>
+    </delete>
+
+    <!--更新一个实体-->
+    <update id="update" parameterType="com.zhou.pojo.News">
+        update news
+        <set>
+            <include refid="News_update"/>
+        </set>
+        <where>
+            <include refid="News_where"/>
+        </where>
+    </update>
+
+    <!--通过 id进行修改-->
+    <update id="updateById" parameterType="com.zhou.pojo.News">
+        update news
+        <set>
+            <include refid="News_update"/>
+        </set>
+        where id=#{id}
+    </update>
+
+    <!--根据 参数 查询-->
+    <select id="listByMap" resultMap="ResultMapNews" parameterType="map">
+        select
+        <include refid="News_field"/>
+        from news where 1=1
+        <include refid="News_where"/>
+    </select>
+
+    <!--查询所有实体-->
+    <select id="listAll" resultMap="ResultMapNews">
+        select
+        <include refid="News_field"/>
+        from news
+    </select>
+
+    <!--查询所有实体,根据实体属性值为判断条件查询所有实体-->
+    <select id="listAllByEntity" resultMap="ResultMapNews">
+        select
+        <include refid="News_field"/>
+        from news
+        where 1=1
+        <include refid="News_where"/>
+    </select>
+
+    <!--根据主键 获取一个实体-->
+    <select id="getById" resultMap="ResultMapNews" parameterType="java.lang.Integer">
+        select
+        <include refid="News_field"/>
+        from news
+        where id = #{id}
+    </select>
+
+    <!--通过map查询-->
+    <select id="getByMap" resultMap="ResultMapNews" parameterType="java.util.Map">
+        select
+        <include refid="News_field"/>
+        from news
+        where 1=1
+        <include refid="News_where"/>
+    </select>
+    <!--根据主键获取一个实体-->
+    <select id="load" resultMap="ResultMapNews" parameterType="java.lang.Integer">
+        select
+        <include refid="News_field"></include>
+        from news where 1=1
+        and id=#{id}
+    </select>
+    <!--通过实体查询-->
+    <select id="getByEntity" resultMap="ResultMapNews" parameterType="com.zhou.pojo.News">
+        select
+        <include refid="News_field"/>
+        from news
+        where 1=1
+        <include refid="News_where"/>
+    </select>
+    <!--批量新增-->
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into news(
+        <include refid="News_field"/>
+        )values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.name},#{item.content},#{item.addTime})
+        </foreach>
+    </insert>
+
+    <!--批量修改-->
+    <update id="updateBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" separator=";">
+            update news
+            <set>
+                <if test="item.name != null">
+                    name=#{item.name},
+                </if>
+                <if test="item.content != null">
+                    content=#{item.content},
+                </if>
+                <if test="item.addTime != null">
+                    addTime=#{item.addTime}
+                </if>
+
+            </set>
+            were 1=1
+            <if test="item.id !=null">
+                and id= #{item.id}
+            </if>
+        </foreach>
+    </update>
+
+    <!--封装存sql语句-->
+    <!--查询一个对象返回实体类-->
+    <!--    <select id="getBySqlReturnMap" resultMap="map">-->
+    <!--        ${sql}-->
+    <!--    </select>-->
+
+    <!--    &lt;!&ndash;查询一个对象返回map&ndash;&gt;-->
+    <!--&lt;!&ndash;    <select id="getBySqlReturnEntity" resultMap="java.util.Map">&ndash;&gt;-->
+    <!--&lt;!&ndash;        ${sql}&ndash;&gt;-->
+    <!--&lt;!&ndash;    </select>&ndash;&gt;-->
+
+    <!--    &lt;!&ndash;查询列表返回一个实体&ndash;&gt;-->
+    <!--    <select id="listBySqlReturnEntity" resultMap="ResultMapNews">-->
+    <!--        ${sql}-->
+    <!--    </select>-->
+
+    <!--    &lt;!&ndash;查询列表返回map&ndash;&gt;-->
+    <!--    <select id="listBySqlReturnMap" resultMap="java.util.Map">-->
+    <!--        ${sql}-->
+    <!--    </select>-->
+
+    <!--    &lt;!&ndash;查询分页&ndash;&gt;-->
+    <select id="findBySqlRerturnEntity" resultMap="ResultMapNews">
+        ${sql}
+    </select>
+
+    <!--    &lt;!&ndash;通过sql修改&ndash;&gt;-->
+    <select id="updateBysql">
+        ${sql}
+    </select>
+
+    <!--    &lt;!&ndash;通过sql删除&ndash;&gt;-->
+    <!--    <select id="deleteBySql" resultMap="java.util.Map">-->
+    <!--        ${sql}-->
+    <!--    </select>-->
+    <!--    <select id="findBySqlRerturnEntity"  >-->
+    <!--        ${sql}-->
+    <!--    </select>-->
+</mapper>

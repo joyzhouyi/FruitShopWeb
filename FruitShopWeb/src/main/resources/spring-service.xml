@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--1.扫描service下的包-->
+    <context:component-scan base-package="com.zhou.service"/>
+
+    <!--2.将我们的所有的业务类，注入到spring类，可以通过配置，或者注解扫描-->
+<!--    <bean id="BookServiceImpl" class="com.zhou.service.BookServiceImpl">-->
+<!--        <property name="bookMapper" ref="bookMapper"/>-->
+<!--    </bean>-->
+    <bean id="ManageServiceImpl" class="com.zhou.service.impl.ManageServiceImpl">
+        <property name="manageMapper" ref="manageMapper"/>
+    </bean>
+    <bean id="ItemCategoryServiceImpl" class="com.zhou.service.impl.ItemCategoryServiceImpl">
+        <property name="itemCategoryMapper" ref="itemCategoryMapper"/>
+    </bean>
+    <bean id="UserServiceImpl" class="com.zhou.service.impl.UserServiceImpl">
+        <property name="userMapper" ref="userMapper"/>
+    </bean>
+    <bean id="ItemServiceImpl" class="com.zhou.service.impl.ItemServiceImpl">
+        <property name="ItemMapper" ref="itemMapper"/>
+    </bean>
+    <bean id="ItemOrderServiceImpl" class="com.zhou.service.impl.ItemOrderServiceImpl">
+        <property name="ItemOrderMapper" ref="itemOrderMapper"/>
+    </bean>
+    <bean id="orderDetailServiceImpl" class="com.zhou.service.impl.OrderDetailServiceImpl">
+        <property name="orderDetailMapper" ref="orderDetailMapper"/>
+    </bean>
+    <bean id="newsServiceImpl" class="com.zhou.service.impl.NewsServiceImpl">
+        <property name="newsMapper" ref="newsMapper"/>
+    </bean>
+    <bean id="messageServiceImpl" class="com.zhou.service.impl.MessageServiceImpl">
+        <property name="messageMapper" ref="messageMapper"/>
+    </bean>
+    <bean id="scServiceImpl" class="com.zhou.service.impl.ScServiceImpl">
+        <property name="scMapper" ref="scMapper"/>
+    </bean>
+    <bean id="carServiceImpl" class="com.zhou.service.impl.CarServiceImpl">
+        <property name="carMapper" ref="carMapper"/>
+    </bean>
+    <!--3.声明事务配置-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <!--注入数据源-->
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <!--4.aop事务支持！-->
+    <aop:config>
+
+    </aop:config>
+</beans>

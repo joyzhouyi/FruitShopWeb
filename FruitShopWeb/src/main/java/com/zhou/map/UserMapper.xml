@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.zhou.map.UserMapper">
+    <!--定义 实体类和数据库映射字段部分-->
+    <resultMap id="ResultMapUser" type="com.zhou.pojo.User">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="userName" column="userName" jdbcType="VARCHAR"/>
+        <result property="passWord" column="passWord" jdbcType="VARCHAR"/>
+        <result property="phone" column="phone" jdbcType="VARCHAR"/>
+        <result property="realName" column="realName" jdbcType="VARCHAR"/>
+        <result property="sex" column="sex" jdbcType="VARCHAR"/>
+        <result property="address" column="address" jdbcType="VARCHAR"/>
+        <result property="email" column="email" jdbcType="VARCHAR"/>
+
+    </resultMap>
+    <!--声明数据库字段-->
+    <sql id="User_field">
+        id
+        ,userName,passWord,phone,realName,sex,address,email
+    </sql>
+    <!--实体类属性-->
+    <sql id="User_insert">
+        #{id}
+        ,
+        #{userName},
+        #{passWord},
+        #{phone},
+        #{realName},
+        #{sex},
+        #{address},
+        #{email}
+    </sql>
+    <!--更新的语句-->
+    <sql id="User_update">
+        <if test="userName != null">
+            userName=#{userName},
+        </if>
+        <if test="passWord != null">
+            passWord=#{passWord},
+        </if>
+        <if test="phone != null">
+            phone=#{phone},
+        </if>
+        <if test="realName != null">
+            realName=#{realName},
+        </if>
+        <if test="sex != null">
+            sex=#{sex},
+        </if>
+        <if test="address != null">
+            address=#{address},
+        </if>
+        <if test="email != null">
+            email=#{email}
+        </if>
+
+    </sql>
+
+    <!--查询时条件-->
+    <sql id="User_where">
+        <if test="userName != null">
+            and userName=#{userName}
+        </if>
+        <if test="passWord != null">
+            and passWord=#{passWord}
+        </if>
+        <if test="phone != null">
+            and phone=#{phone}
+        </if>
+        <if test="realName != null">
+            and realName=#{realName}
+        </if>
+        <if test="sex != null">
+            and sex=#{sex}
+        </if>
+        <if test="address != null">
+            and address=#{address}
+        </if>
+        <if test="email != null">
+            and email=#{email}
+        </if>
+    </sql>
+
+
+    <!-- 新增 -->
+    <!--  参数：实体类
+          返回：主键-->
+    <insert id="insert" parameterType="com.zhou.pojo.User" useGeneratedKeys="true" keyProperty="id">
+        insert into user (
+        <include refid="User_field"/>
+        ) values (
+        <include refid="User_insert"/>
+        )
+    </insert>
+
+    <!-- 通过实体主键进行删除-->
+    <!--参数：id-->
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        delete
+        from user
+        where id = #{id}
+    </delete>
+
+    <!--通过实体删除-->
+    <delete id="deleteByEntity" parameterType="com.zhou.pojo.User">
+        delete from user where 1=1
+        <include refid="User_where"/>
+    </delete>
+
+    <!--通过Map 删除-->
+    <delete id="deleteByMap" parameterType="java.util.Map">
+        delete from user where 1=1
+        <include refid="User_where"/>
+    </delete>
+
+    <!--更新一个实体-->
+    <update id="update" parameterType="com.zhou.pojo.User">
+        update user
+        <set>
+            <include refid="User_update"/>
+        </set>
+       <where>
+           id=#{id}
+       </where>
+    </update>
+
+    <!--通过 id进行修改-->
+    <update id="updateById" parameterType="com.zhou.pojo.User">
+        update user
+        <set>
+            <include refid="User_update"/>
+        </set>
+        where id=#{id}
+    </update>
+
+    <!--根据 参数 查询-->
+    <select id="listByMap" resultMap="ResultMapUser" parameterType="map">
+        select
+        <include refid="User_field"/>
+        from user where 1=1
+        <include refid="User_where"/>
+    </select>
+
+    <!--查询所有实体-->
+    <select id="listAll" resultMap="ResultMapUser">
+        select
+        <include refid="User_field"/>
+        from user
+    </select>
+
+    <!--查询所有实体,根据实体属性值为判断条件查询所有实体-->
+    <select id="listAllByEntity" resultMap="ResultMapUser">
+        select
+        <include refid="User_field"/>
+        from user
+        where 1=1
+        <include refid="User_where"/>
+    </select>
+
+    <!--根据主键 获取一个实体-->
+    <select id="getById" resultMap="ResultMapUser" parameterType="java.lang.Integer">
+        select
+        <include refid="User_field"/>
+        from user
+        where id = #{id}
+    </select>
+
+    <!--通过map查询-->
+    <select id="getByMap" resultMap="ResultMapUser" parameterType="java.util.Map">
+        select
+        <include refid="User_field"/>
+        from user
+        where 1=1
+        <include refid="User_where"/>
+    </select>
+    <!--根据主键获取一个实体-->
+    <select id="load" resultMap="ResultMapUser" parameterType="java.lang.Integer">
+        select
+        <include refid="User_field"></include>
+        from user where  1=1
+        and id=#{id}
+    </select>
+    <!--通过实体查询-->
+    <select id="getByEntity" resultMap="ResultMapUser" parameterType="com.zhou.pojo.User">
+        select
+        <include refid="User_field"/>
+        from user
+        where 1=1
+        <include refid="User_where"/>
+    </select>
+    <!--批量新增-->
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into user(
+        <include refid="User_field"/>
+        )values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.userName},#{item.passWord},#{item.phone},#{item.realName},#{item.sex},#{item.address},#{item.email})
+        </foreach>
+    </insert>
+
+    <!--批量修改-->
+    <update id="updateBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" separator=";">
+            update user
+            <set>
+                <if test="item.userName != null">
+                    userName=#{item.userName},
+                </if>
+                <if test="item.passWord != null">
+                    passWord=#{item.passWord},
+                </if>
+                <if test="item.phone != null">
+                    phone=#{item.phone}
+                </if>
+                <if test="item.realName != null">
+                    realName=#{item.realName}
+                </if>
+                <if test="item.sex != null">
+                    sex=#{item.sex}
+                </if>
+                <if test="item.address != null">
+                    address=#{item.address}
+                </if>
+                <if test="item.email != null">
+                    email=#{item.email}
+                </if>
+
+            </set>
+            were 1=1
+            <if test="item.id !=null">
+                and id= #{item.id}
+            </if>
+        </foreach>
+    </update>
+
+    <!--封装存sql语句-->
+    <!--查询一个对象返回实体类-->
+    <!--    <select id="getBySqlReturnMap" resultMap="map">-->
+    <!--        ${sql}-->
+    <!--    </select>-->
+
+    <!--    &lt;!&ndash;查询一个对象返回map&ndash;&gt;-->
+    <!--&lt;!&ndash;    <select id="getBySqlReturnEntity" resultMap="java.util.Map">&ndash;&gt;-->
+    <!--&lt;!&ndash;        ${sql}&ndash;&gt;-->
+    <!--&lt;!&ndash;    </select>&ndash;&gt;-->
+
+    <!--    &lt;!&ndash;查询列表返回一个实体&ndash;&gt;-->
+    <!--    <select id="listBySqlReturnEntity" resultMap="ResultMapUser">-->
+    <!--        ${sql}-->
+    <!--    </select>-->
+
+    <!--    &lt;!&ndash;查询列表返回map&ndash;&gt;-->
+    <!--    <select id="listBySqlReturnMap" resultMap="java.util.Map">-->
+    <!--        ${sql}-->
+    <!--    </select>-->
+
+    <!--    &lt;!&ndash;查询分页&ndash;&gt;-->
+    <select id="findBySqlRerturnEntity" resultMap="ResultMapUser">
+        ${sql}
+    </select>
+
+    <!--    &lt;!&ndash;通过sql修改&ndash;&gt;-->
+    <select id="updateBysql">
+        ${sql}
+    </select>
+
+    <!--    &lt;!&ndash;通过sql删除&ndash;&gt;-->
+    <!--    <select id="deleteBySql" resultMap="java.util.Map">-->
+    <!--        ${sql}-->
+    <!--    </select>-->
+    <!--    <select id="findBySqlRerturnEntity"  >-->
+    <!--        ${sql}-->
+    <!--    </select>-->
+</mapper>

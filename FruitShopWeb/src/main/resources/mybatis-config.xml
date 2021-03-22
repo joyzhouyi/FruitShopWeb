@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!--配置数据源，交给Spring去做-->
+    <!--自动取别名-->
+    <typeAliases>
+        <package name="com.zhou.pojo"/>
+    </typeAliases>
+
+    <!--当然这里可以去掉，因为spring-dao.xml中配置了自动扫描-->
+<!--    <mappers>-->
+<!--        <mapper class="com.zhou.map.BookMapper"/>-->
+
+<!--        <mapper class="com.zhou.map.ManageMapper"/>-->
+<!--    </mappers>-->
+</configuration>
