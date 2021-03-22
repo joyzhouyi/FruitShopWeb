@@ -16,4 +16,10 @@
 
 浏览器：chrome
 
-前端水果销售页面展示
+#### 前端水果销售页面展示
+
+ ![image-20210322150007075](C:\Users\zhouyi\AppData\Roaming\Typora\typora-user-images\image-20210322150007075.png)
+
+#### 后台管理页面
+
+![image-20210322150106268](C:\Users\zhouyi\AppData\Roaming\Typora\typora-user-images\image-20210322150106268.png)
