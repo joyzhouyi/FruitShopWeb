@@ -18,8 +18,8 @@
 
 #### 前端水果销售页面展示
 
- ![image-20210322150007075](https://github.com/joyzhouyi/FruitShopWeb/web/pic/QQ%E6%88%AA%E5%9B%BE20210406104458.png)
+ ![image-20210322150007075](https://github.com/joyzhouyi/FruitShopWeb/blob/master/FruitShopWeb/web/pic/QQ%E6%88%AA%E5%9B%BE20210406104458.png)
 
 #### 后台管理页面
 
-![image-20210322150106268](https://github.com/joyzhouyi/FruitShopWeb/web/pic/QQ%E6%88%AA%E5%9B%BE20210406104535.png)
+![image-20210322150106268](https://github.com/joyzhouyi/FruitShopWeb/blob/master/FruitShopWeb/web/pic/QQ%E6%88%AA%E5%9B%BE20210406104535.png)
